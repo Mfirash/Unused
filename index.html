@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Top Section</title>
+<style>
+ .body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #6693d4;
+ } 
+.top-bar {
+  background-color: #f0f0f0; /* Light gray background */
+  padding: 10px 15px; /* Add some padding around the content */
+  display: flex; /* Enable flexbox for alignment */
+  align-items: center; /* Vertically align items in the center */
+}
+
+.title {
+  font-size: 1.2em; /* Adjust the size of the title */
+  font-weight: bold; /* Make the title bold */
+}
+</style>
+  
+</head>
+<body>
+
+<div class="top-bar">  
+  <span class="title">Comjs Panel</span>  
+</div>
+<div>  
+ x  
+ <input type="text" id="xaxis" name="x">
+</div>  
+<div>  
+ y  
+ <input type="text" id="yaxis" name="y">
+</div>  
+<div>  
+ z 
+ <input type="text" id="xaxis" name="x">
+</div>
+<button type="button">Confirm pos</button>
+<p>tutorial npm install express mineflayer</p> 
+<p>and use the code down below</p>  
+<pre><code>
+const express = require('express');
+const bodyParser = require('body-parser');
+const mineflayer = require('mineflayer');
+
+const app = express();
+
+const port = 3000;
+
+app.use(bodyParser.json());
+
+const bot = mineflayer.createBot({   
+  host: 'kaboom.pw',
+  port: 25565, 
+  username: 'ComBot',
+});
+
+bot.on('login', () => {  
+});
+
+
+app.post('/move', (req, res) => {
+  const { x, y, z } = req.body;
+  if (typeof x === 'number' && typeof y === 'number' && typeof z === 'number') {
+    bot.chat(`/tp ${bot.username} ${x} ${y} ${z}`); 
+    res.send(`Bot teleported to X: ${x}, Y: ${y}, Z: ${z}`);
+  } else {
+    res.status(400).send('Invalid coordinates received');
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+</code></pre>
+  
+ 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const confirmButton = document.getElementById('confirmButton');
+      const xInput = document.getElementById('xaxis');
+      const yInput = document.getElementById('yaxis');
+      const zInput = document.getElementById('zaxis');
+
+      confirmButton.addEventListener('click', () => {
+        const x = parseInt(xInput.value);
+        const y = parseInt(yInput.value);
+        const z = parseInt(zInput.value);
+
+        if (!isNaN(x) && !isNaN(y) && !isNaN(z)) {
+          fetch('http://localhost:3000/move', { 
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ x, y, z }),
+          })
+          .then(response => response.text())
+          .then(data => {
+            console.log('data sent:', data); 
+          })
+          .catch((error) => {
+            console.error('ERR data not sent', error);
+          });
+        } else {
+          alert('Invalid X Y Z');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
